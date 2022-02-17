@@ -62,7 +62,7 @@ function findHaikus() {
         var wordCount = 0;
         var syllablesSoFar = 0;
         var lineIndex = 0;
-        while(index < syllableCounts.length)
+        while(wordIndex < syllableCounts.length)
         {
             syllablesSoFar = syllablesSoFar + syllableCounts[wordIndex];
             if(syllablesSoFar > lineStructure[lineIndex])
@@ -77,7 +77,7 @@ function findHaikus() {
                     // it's a match!
                     haiku = words.slice(start, start + wordCount);
                     haiku = haiku.join(" ");
-                    haikus.push()
+                    haikus.push(haiku);
                 }
             }
 
@@ -86,7 +86,6 @@ function findHaikus() {
         }
     }
 
-    // calculate syllables
     console.log(haikus);
   }
 
