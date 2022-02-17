@@ -75,6 +75,17 @@ function findHaikus() {
                 if(lineIndex === 3)
                 {
                     // it's a match!
+
+                    // filter by syllable count
+                    if(syllablesSoFar / wordCount < 2.5)
+                    {
+                        break;
+                    }
+                    if(words[wordIndex] === "the" || words[wordIndex] === "a" || words[wordIndex] === "an")
+                    {
+                        break;
+                    }
+                    
                     haiku = words.slice(start, start + wordCount);
                     haiku = haiku.join(" ");
                     haikus.push(haiku);
