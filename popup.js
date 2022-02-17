@@ -31,17 +31,62 @@ function findHaikus() {
         }
         return [span.textContent || span.innerText].toString().replace(/ +/g,' ');
       };
-    
-    // Initialize butotn with users's prefered color
-    let changeColor = document.getElementById("changeColor");
-    
-    chrome.storage.sync.get("color", ({ color }) => {
-      changeColor.style.backgroundColor = color;
-    });
 
+    var countSyllables = function(word) 
+    {
+        word = word.toLowerCase();                                     
+        word = word.replace(/(?:[^laeiouy]|ed|[^laeiouy]e)$/, '');   
+        word = word.replace(/^y/, '');
+        var syl = word.match(/[aeiouy]{1,2}/g);
+        // console.log(syl);
+        if(syl)
+        {
+            return syl.length;
+        }
+        return 0;
+    };
+    
+    bodyText = extractContent(document.body.innerHTML);
+    words = bodyText.split(" ");
+    var syllableCounts = Array(words.length);
+    for (let index = 0; index < words.length; index++) {
+        words[index] = words[index].replace(/[^a-z]/gi, '');
+        syllableCounts[index] = countSyllables(words[index]);
+    }
 
-    console.log(extractContent(document.body.innerHTML));
-    // console.log(extractContent("<p>Hello</p><a href='http://w3c.org'>W3C</a>.  Nice to <em>see</em><strong><em>you!</em></strong>"));
-    console.log("Ran");
+    // find sequences where the words fit a 5,7,5 syllable sequence
+    var haikus = Array(0);
+    var lineStructure = [5, 12, 17];
+    for (let start = 0; start < words.length; start++) {
+        var wordIndex = start;
+        var wordCount = 0;
+        var syllablesSoFar = 0;
+        var lineIndex = 0;
+        while(index < syllableCounts.length)
+        {
+            syllablesSoFar = syllablesSoFar + syllableCounts[wordIndex];
+            if(syllablesSoFar > lineStructure[lineIndex])
+            {
+                break; // not a fit
+            }
+            else if(syllablesSoFar === lineStructure[lineIndex])
+            {
+                lineIndex = lineIndex + 1;
+                if(lineIndex === 3)
+                {
+                    // it's a match!
+                    haiku = words.slice(start, start + wordCount);
+                    haiku = haiku.join(" ");
+                    haikus.push()
+                }
+            }
+
+            wordIndex = wordIndex + 1;
+            wordCount = wordCount + 1;
+        }
+    }
+
+    // calculate syllables
+    console.log(haikus);
   }
 
